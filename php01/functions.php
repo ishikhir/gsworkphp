@@ -1,6 +1,6 @@
 <?php
 
-function h($val){
+function xss($val){
 	return htmlspecialchars($val,ENT_QUOTES);
 }
 

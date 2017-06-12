@@ -1,0 +1,14 @@
+form,form div,#reformArea{
+	display: flex;
+	flex-direction: column;
+}
+
+#choose{
+	display: flex;
+	justify-content: space-around;
+	margin-bottom: 30px;
+}
+
+form div,.graph{
+	margin-bottom: 30px;
+}
