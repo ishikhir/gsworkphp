@@ -3,7 +3,7 @@ form,form div,#reformArea{
 	flex-direction: column;
 }
 
-#choose{
+#choose,#result{
 	display: flex;
 	justify-content: space-around;
 	margin-bottom: 30px;
@@ -11,4 +11,8 @@ form,form div,#reformArea{
 
 form div,.graph{
 	margin-bottom: 30px;
+}
+
+#thanks,#thanks img{
+	width: 100%;
 }
