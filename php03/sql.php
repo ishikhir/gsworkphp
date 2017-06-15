@@ -1,14 +1,12 @@
 <?php //　受け取り処理
 include("functions.php");
-$reformDataCsv = 'data/reform_data.csv';//　リフォームのデータベース
-$constNewDataCsv = 'data/constNew_data.csv';//　新築のデータベース
 
 if(isset($_GET["id"]) && $_GET["id"]=="reform"){
 	if($_GET["name"]==="JSON"||$_GET["name"]==="Jason"||$_GET["name"]==="ジェイソン"||$_GET["name"]==="json"||$_GET["name"]==="jason"){
 	$name3=$_GET['name'];
 	$strJason="{$name3}";
 	$json3 = json_encode($strJason);
-	echo $json3;                 //jsonを表示
+	echo $json3;
 	exit;
 	}
 
@@ -20,32 +18,26 @@ if(isset($_GET["id"]) && $_GET["id"]=="reform"){
 	$satisfaction=$_GET['satisfaction'];
 	$reason=$_GET['reason'];
 
-
-	try {
-		$pdo = new PDO('mysql:dbname=myHome;charset=utf8;host=localhost','root','');
-	} catch (PDOException $e) {
-		exit('DbConnectError:'.$e->getMessage());
-	}
+	$pdo=pdoLocalhost();
 
 	$stmt = $pdo->prepare("INSERT INTO reform_q(id,name,yourAge,homeAge,why,decide,satisfaction,reason,indate)
-		VALUES(NULL,:name,:yourAge,:homeAge,:why,:decide,:satisfaction,:reason,sysdate())");
-	$stmt->bindValue(':name', $name, PDO::PARAM_STR);  //Integer（数値の場合 PDO::PARAM_INT)
-	$stmt->bindValue(':yourAge', $yourAge, PDO::PARAM_INT);  //Integer（数値の場合 PDO::PARAM_INT)
-	$stmt->bindValue(':homeAge', $homeAge, PDO::PARAM_INT);  //Integer（数値の場合 PDO::PARAM_INT)
-	$stmt->bindValue(':why', $why, PDO::PARAM_STR);  //Integer（数値の場合 PDO::PARAM_INT)
-	$stmt->bindValue(':decide', $decide, PDO::PARAM_STR);  //Integer（数値の場合 PDO::PARAM_INT)
-	$stmt->bindValue(':satisfaction', $satisfaction, PDO::PARAM_STR);  //Integer（数値の場合 PDO::PARAM_INT)
-	$stmt->bindValue(':reason', $reason, PDO::PARAM_STR);  //Integer（数値の場合 PDO::PARAM_INT)
+	VALUES(NULL,:name,:yourAge,:homeAge,:why,:decide,:satisfaction,:reason,sysdate())");
+	$stmt->bindValue(':name', $name, PDO::PARAM_STR);
+	$stmt->bindValue(':yourAge', $yourAge, PDO::PARAM_INT);
+	$stmt->bindValue(':homeAge', $homeAge, PDO::PARAM_INT);
+	$stmt->bindValue(':why', $why, PDO::PARAM_STR);
+	$stmt->bindValue(':decide', $decide, PDO::PARAM_STR);
+	$stmt->bindValue(':satisfaction', $satisfaction, PDO::PARAM_STR);
+	$stmt->bindValue(':reason', $reason, PDO::PARAM_STR);
 	$status = $stmt->execute();
 
-	//４．データ登録処理後
+//４．データ登録処理後
 	if($status==false){
-		$error = $stmt->errorInfo();
-		exit("QueryError:".$error[2]);//　[2]で固定でいい
+		qerror($stmt);
 	}else{
 		$str="{$name}";
 		$json = json_encode($str);
-		echo $json;                 //jsonを表示
+		echo $json;
 		exit;
 	}
 }
@@ -60,14 +52,9 @@ if(isset($_GET["id"]) && $_GET["id"]=="constNew"){
 	$satisfaction2=$_GET['satisfaction2'];
 	$reason2=$_GET['reason2'];
 
+	$pdo=pdoLocalhost();
 
-	try {
-		$pdo3 = new PDO('mysql:dbname=myHome;charset=utf8;host=localhost','root','');
-	} catch (PDOException $e) {
-		exit('DbConnectError:'.$e->getMessage());
-	}
-
-	$stmt3 = $pdo3->prepare("INSERT INTO constNew_q(id,name,yourAge,why,decide,satisfaction,reason,indate)
+	$stmt3 = $pdo->prepare("INSERT INTO constNew_q(id,name,yourAge,why,decide,satisfaction,reason,indate)
 		VALUES(NULL,:name,:yourAge,:why,:decide,:satisfaction,:reason,sysdate())");
 	$stmt3->bindValue(':name', $name2, PDO::PARAM_STR);  //Integer（数値の場合 PDO::PARAM_INT)
 	$stmt3->bindValue(':yourAge', $yourAge2, PDO::PARAM_INT);  //Integer（数値の場合 PDO::PARAM_INT)
@@ -79,8 +66,7 @@ if(isset($_GET["id"]) && $_GET["id"]=="constNew"){
 
 	//４．データ登録処理後
 	if($status3==false){
-		$error3 = $stmt3->errorInfo();
-		exit("QueryError:".$error3[2]);//　[2]で固定でいい
+		qerror($stmt3);
 	}else{
 		$str3="{$name2}";
 		$json3 = json_encode($str3);
