@@ -118,7 +118,7 @@ hr.small {
 	top: 0;
 	width: 250px;
 	margin: 0;
-	padding: 0;
+	padding: 10px;
 	list-style: none;
 }
 
@@ -156,6 +156,11 @@ hr.small {
 }
 
 .sidebar-nav>.sidebar-brand a {
+	color: #999;
+}
+
+.sidebar-nav>.sidebar-brand,
+.sidebar-nav label{
 	color: #999;
 }
 
@@ -202,7 +207,7 @@ hr.small {
 }
 
 #sidebar-wrapper2.active, 
-#sidebar-wrapper4.active, {
+#sidebar-wrapper4.active {
 	left: 250px;
 	width: 250px;
 	-webkit-transition: all 0.4s ease 0s;
@@ -366,4 +371,22 @@ footer {
 
 #upLoad2{
 	background: #fff;
+}
+
+
+#signIn,
+#upDate{
+	padding: 10px;
+	display: flex;
+	flex-direction: column;
+}
+
+#signIn .mb10,
+#upDate .mb10{
+	margin-bottom: 10px;
+}
+
+#signIn .mb20,
+#upDate .mb20{
+	margin-bottom: 20px;
 }

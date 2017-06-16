@@ -14,6 +14,8 @@ $('#loadComp2').hide();
 $('#homeOption').hide();
 $('#doWhatArea').hide();
 $('#priceArea').hide();
+$('#userLogin').hide();
+$('#userUpdate').hide();
 
 
 
@@ -25,7 +27,7 @@ $('#priceArea').hide();
 // Closes the sidebar menu
 $("#menu-close").on("click",function(e) {
 	$("#sidebar-wrapper").toggleClass("active");
-		return false;
+	return false;
 });
 
 // Opens the sidebar menu
@@ -36,7 +38,7 @@ $("#menu-toggle").on("click",function(e) {
 
 $("#menu-close3").on("click",function(e) {
 	$("#sidebar-wrapper3").toggleClass("active");
-		return false;
+	return false;
 });
 
 $("#menu-toggle3").on("click",function(e) {
@@ -47,7 +49,7 @@ $("#menu-toggle3").on("click",function(e) {
 
 $("#menu-close4").on("click",function(e) {
 	$("#sidebar-wrapper4").toggleClass("active");
-		return false;
+	return false;
 });
 
 $("#menu-toggle4").on("click",function(e) {
@@ -65,6 +67,17 @@ $("#menu-toggle2").on("click",function(e) {
 	var sign = window.prompt("ユーザー名をご入力ください", "ニックネーム可");
 	$('#username').val(sign);
 	return false;
+});
+
+
+$('#loginBtn').on('click',function(){
+	$('#userLogin').show();
+	$('#userUpdate').hide();
+});
+
+$('#updateBtn').on('click',function(){
+	$('#userLogin').hide();
+	$('#userUpdate').show();
 });
 
 

@@ -7,7 +7,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="description" content="">
 	<meta name="author" content="">
-	<title>いえメンNAVI｜一軒家のメンテナンスナビ</title>
+	<title>いえメンなび｜一軒家のメンテナンスナビ</title>
 	<!-- Bootstrap Core CSS -->
 	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" id="themesid">
 
@@ -64,26 +64,45 @@
 	<div id="sidebar-wrapper3">
 		<div class="sidebar-nav">
 			<a id="menu-close3" href="#" class="btn btn-light btn-lg pull-right toggle"><i class="fa fa-times"></i></a>
-			<p class="sidebar-brand">ログイン</p>
+			<p class="sidebar-brand">ユーザーメニュー</p>
 			<div class="cotainer">
-				<form id="UserLogin" class="form-inline row">
+				<button id="loginBtn">logIn</button>
+				<button id="updateBtn">upDate</button>
+				<form id="userLogin" class="form-inline row" action="login_check.php" method="post">
 					<div class="form-group form-group-lg col-sm-11">
 						<label class="control-label" for="homeName">ID</label>
 						<div class="inputWrap">
-							<input class="form-control" type="text" name="userId" id="userId" placeholder="半角英数字でご入力くださいませ">
+							<input class="form-control" type="text" name="userId" id="userId" required>
 						</div>
 					</div>
 					<div class="form-group form-group-lg col-sm-11">
 						<label class="control-label" for="homeName">PASS</label>
 						<div class="inputWrap">
-							<input class="form-control" type="text" name="userPass" id="userPass" placeholder="半角英数字でご入力くださいませ">
+							<input class="form-control" type="password" name="userPass" id="userPass" required>
 						</div>
 					</div>
 					<div class="form-group form-group-lg col-sm-11">
 						<button class="btn btn-default" id="login">logIn</button>
 					</div>
 				</form>
-				<a href="signin.php" class="btn btn-default" id="UserSignin">SignIn</a>
+				<form id="userUpdate" class="form-inline row" action="update.php" method="post">
+					<div class="form-group form-group-lg col-sm-11">
+						<label class="control-label" for="homeName">ID</label>
+						<div class="inputWrap">
+							<input class="form-control" type="text" name="userId" id="userId2" required>
+						</div>
+					</div>
+					<div class="form-group form-group-lg col-sm-11">
+						<label class="control-label" for="homeName">PASS</label>
+						<div class="inputWrap">
+							<input class="form-control" type="password" name="userPass" id="userPass2" required>
+						</div>
+					</div>
+					<div class="form-group form-group-lg col-sm-11">
+						<button class="btn btn-default" id="update">upDate</button>
+					</div>
+				</form>
+				<a href="signin.php" class="btn btn-default" id="userSignin">SignIn</a>
 			</div>
 		</div>
 	</div>
@@ -127,7 +146,7 @@
 	<!-- Header -->
 	<header id="top" class="header">
 		<div class="text-vertical-center">
-			<h1>いえメンNAVI</h1>
+			<h1>いえメンなび</h1>
 			<h3>あなたの家のメンテナンスをナビゲートします</h3>
 			<br>
 			<a href="#callout" class="btn btn-primary btn-lg">すぐに使う</a>
