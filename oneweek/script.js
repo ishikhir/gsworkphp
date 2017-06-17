@@ -35,7 +35,7 @@ $("#reformSend").on("click", function(e) {
 	e.preventDefault();
 	let userForm = $("#reformForm").serializeArray();
 	//JSON取得
-	$.getJSON("output_data5.php?id=reform", userForm, function(reformUser) {
+	$.getJSON("sql.php?id=reform", userForm, function(reformUser) {
 		console.log(reformUser);
 		if(reformUser==="JSON"||reformUser==="Jason"||reformUser==="ジェイソン"||reformUser==="json"||reformUser==="jason"){
 			let json="thanks! ";
@@ -236,7 +236,7 @@ $("#constNewSend").on("click", function(e) {
 	e.preventDefault();
 	let userForm2 = $("#constNewForm").serializeArray();
 	//JSON取得
-	$.getJSON("output_data5.php?id=constNew", userForm2, function(constNewUser) {
+	$.getJSON("sql.php?id=constNew", userForm2, function(constNewUser) {
 		console.log(constNewUser);
 		let span = "<span>thaks! ";
 		span += constNewUser;

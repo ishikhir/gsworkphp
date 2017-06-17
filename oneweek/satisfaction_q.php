@@ -1,5 +1,9 @@
 <?php
+session_start();
+
 include("functions.php");
+
+loginCheck();
 
 $pdo=pdoLocalhost();
 
@@ -219,6 +223,7 @@ if($reasonex2==false){
 
 <body>
 	<h1>一戸建ての新築・リフォームの意識調査</h1>
+	<button id="logOut"><a href="logout.php">logOut</a></button>
 	<p>アンケートにご協力くださいませ（※個人情報は取得していません）</p>
 	<div id="choose">
 		<button id="constNewBtn">一軒家を新築した！</button>

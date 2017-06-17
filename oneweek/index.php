@@ -66,8 +66,6 @@
 			<a id="menu-close3" href="#" class="btn btn-light btn-lg pull-right toggle"><i class="fa fa-times"></i></a>
 			<p class="sidebar-brand">ユーザーメニュー</p>
 			<div class="cotainer">
-				<button id="loginBtn">logIn</button>
-				<button id="updateBtn">upDate</button>
 				<form id="userLogin" class="form-inline row" action="login_check.php" method="post">
 					<div class="form-group form-group-lg col-sm-11">
 						<label class="control-label" for="homeName">ID</label>
@@ -83,23 +81,6 @@
 					</div>
 					<div class="form-group form-group-lg col-sm-11">
 						<button class="btn btn-default" id="login">logIn</button>
-					</div>
-				</form>
-				<form id="userUpdate" class="form-inline row" action="update.php" method="post">
-					<div class="form-group form-group-lg col-sm-11">
-						<label class="control-label" for="homeName">ID</label>
-						<div class="inputWrap">
-							<input class="form-control" type="text" name="userId" id="userId2" required>
-						</div>
-					</div>
-					<div class="form-group form-group-lg col-sm-11">
-						<label class="control-label" for="homeName">PASS</label>
-						<div class="inputWrap">
-							<input class="form-control" type="password" name="userPass" id="userPass2" required>
-						</div>
-					</div>
-					<div class="form-group form-group-lg col-sm-11">
-						<button class="btn btn-default" id="update">upDate</button>
 					</div>
 				</form>
 				<a href="signin.php" class="btn btn-default" id="userSignin">SignIn</a>

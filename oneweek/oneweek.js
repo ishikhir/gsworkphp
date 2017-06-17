@@ -14,8 +14,6 @@ $('#loadComp2').hide();
 $('#homeOption').hide();
 $('#doWhatArea').hide();
 $('#priceArea').hide();
-$('#userLogin').hide();
-$('#userUpdate').hide();
 
 
 

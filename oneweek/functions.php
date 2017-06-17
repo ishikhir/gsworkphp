@@ -28,4 +28,17 @@ function xss($val){
 	return htmlspecialchars($val,ENT_QUOTES,"UTF-8");
 }
 
+//　セッションIDを発行してログインチェック　チェックOKならさらにIDを更新（else以下）
+
+function loginCheck(){
+	if(!isset($_SESSION["ssidCheck"])||$_SESSION["ssidCheck"]!=session_id()){
+		echo "logIn Error!";
+		exit();
+	}else{
+		session_regenerate_id(true);
+		$_SESSION["ssidCheck"]=session_id();
+	}
+}
+
+
 ?>

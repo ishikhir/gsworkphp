@@ -1,7 +1,8 @@
 <?php
-include("functions.php");
 
 session_start();
+
+include("functions.php");
 
 $userId=$_POST["userId"];
 $userPass=$_POST["userPass"];
@@ -23,7 +24,7 @@ if($result["id"]!=""){
 	$_SESSION["ssidCheck"]=session_id();
 	$_SESSION["userId"]=$result["userId"];
 	$_SESSION["name"]=$result["name"];
-	header("Location: satisfaction_q.php");
+	header("Location: user_tool.php");
 }else{
 	header("Location: index.php");
 }
