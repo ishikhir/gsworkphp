@@ -1,6 +1,9 @@
 <?php
+session_start();
 
 include("functions.php");
+
+loginCheck();
 
 $id=$_POST["id"];
 $userId=$_POST["userId"];
@@ -27,7 +30,7 @@ $status = $stmt->execute();
 if($status==false){
 	qerror($stmt);
 }else{
-	header("Location: index.php");
+	header("Location: user_tool.php");
 	exit;
 }
 

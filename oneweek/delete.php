@@ -1,6 +1,9 @@
 <?php
+session_start();
 
 include("functions.php");
+
+loginCheck();
 
 $id=$_GET["id"];
 
@@ -13,7 +16,7 @@ $status = $stmt->execute();
 if($status==false){
 	qerror($stmt);
 }else{
-	header("Location: index.php");
+	header("Location: logout.php");
 	exit;
 }
 

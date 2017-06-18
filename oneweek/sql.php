@@ -1,4 +1,6 @@
 <?php //　受け取り処理
+session_start();
+
 include("functions.php");
 
 if(isset($_GET["id"]) && $_GET["id"]=="reform"){

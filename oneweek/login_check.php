@@ -20,9 +20,11 @@ if($status==false){
 	$result = $stmt->fetch();
 }
 
-if($result["id"]!=""){
+if($result["id"]!=""&&$result["lifeFlg"]==0){
 	$_SESSION["ssidCheck"]=session_id();
+	$_SESSION["id"]=$result["id"];
 	$_SESSION["userId"]=$result["userId"];
+	$_SESSION["userPass"]=$result["userPass"];
 	$_SESSION["name"]=$result["name"];
 	header("Location: user_tool.php");
 }else{

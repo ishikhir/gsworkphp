@@ -1,14 +1,18 @@
 <?php
+session_start();
 
 include("functions.php");
 
-//1.GETでidを取得
-$userId = $_POST["userId"];
-$userPass = $_POST["userPass"];
+loginCheck();
+
+$id=$_SESSION["id"];
+$userId = $_SESSION["userId"];
+$userPass = $_SESSION["userPass"];
 
 $pdo = pdolocalhost();
 
-$stmt = $pdo->prepare("SELECT * FROM user_table WHERE userId=:userId AND userPass=:userPass");
+$stmt = $pdo->prepare("SELECT * FROM user_table WHERE id=:id AND userId=:userId AND userPass=:userPass");
+$stmt->bindValue(":id",$id,PDO::PARAM_INT);
 $stmt->bindValue(":userId",$userId,PDO::PARAM_INT);
 $stmt->bindValue(":userPass",$userPass,PDO::PARAM_INT);
 $status = $stmt->execute();
@@ -33,6 +37,7 @@ if($status==false){
 <body>
 
 <h1>登録情報変更</h1>
+<button class="mb20" id="returnToolTop"><a href="user_tool.php">管理画面にもどる</a></button>
 <form name="upDate" id="upDate" action="update_sql.php" method="post">
 	<input type="hidden" name="id" value="<?=xss($result["id"])?>">
 	<label for="userId">ユーザーID</label>
@@ -50,8 +55,8 @@ if($status==false){
 	<label for="address2">地番・マンション名</label>
 		<input class="mb20" type="text" name="address2" id="address2" value="<?=xss($result["address2"])?>" required>
 	<button class="mb20" type="submit">変更する</button>
-	<button id="deleteBtn"><a href="delete.php?id=<?=xss($result["id"])?>">削除する</a></button>
-
+	<button class="mb20" id="deleteBtn"><a href="delete.php?id=<?=xss($result["id"])?>">削除する</a></button>
+	<button id="returnToolTop2"><a href="user_tool.php">管理画面にもどる</a></button>
 </form>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script>

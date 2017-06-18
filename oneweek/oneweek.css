@@ -375,18 +375,18 @@ footer {
 
 
 #signIn,
-#upDate{
+#upDate,
+#userUpdate,
+#tools{
 	padding: 10px;
 	display: flex;
 	flex-direction: column;
 }
 
-#signIn .mb10,
-#upDate .mb10{
+.mb10{
 	margin-bottom: 10px;
 }
 
-#signIn .mb20,
-#upDate .mb20{
+.mb20{
 	margin-bottom: 20px;
 }
