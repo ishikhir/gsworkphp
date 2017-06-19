@@ -208,26 +208,26 @@
 
 	<!-- Callout -->
 	<div id="callout" class="callout">
-		<div class="text-vertical-center">
+		<form action="index.php" method="post" class="text-vertical-center">
 			<h2>あなた家の情報を入力してね！</h2>
 			<div class="cotainer">
 				<form id="homeBasicInfo" class="form-inline row">
 					<div class="form-group form-group-lg col-sm-4">
 						<label class="control-label" for="homeName">家に名前をつけよう！</label>
 						<div class="inputWrap">
-							<input class="form-control" type="text" id="homeName" placeholder="俺のいえ">
+							<input class="form-control" type="text" id="homeName" name="homeName" placeholder="俺のいえ">
 						</div>
 					</div>
 					<div class="form-group form-group-lg col-sm-4">
 						<label class="control-label" for="homeAge">築年数</label>
 						<div class="inputWrap">
-							<select id="homeAge" class="form-control"></select>
+							<select id="homeAge" name="homeAge" class="form-control"></select>
 						</div>
 					</div>
 					<div class="form-group form-group-lg col-sm-4">
 						<label class="control-label" for="homeSize">建坪</label>
 						<div class="inputWrap">
-							<select id="homeSize" class="form-control"></select>
+							<select id="homeSize" name="homeSize" class="form-control"></select>
 						</div>
 					</div>
 				</form>
@@ -265,19 +265,19 @@
 					<div class="form-group form-group-lg col-sm-4">
 						<label class="control-label" for="roof">屋根</label>
 						<div class="inputWrap">
-							<select id="roof" class="form-control">
-								<option value="瓦">瓦</option>
-								<option value="スレート">スレート</option>
-								<option value="金属">金属</option>
-								<option value="シングル">シングル</option>
-								<option value="その他">その他</option>
+							<select id="roof" name="roof" class="form-control">
+								<option value="clay">瓦</option>
+								<option value="slate">スレート</option>
+								<option value="metal">金属</option>
+								<option value="single">シングル</option>
+								<option value="otherTiles">その他</option>
 							</select>
 						</div>
 					</div>
 					<div class="form-group form-group-lg col-sm-4">
 						<label class="control-label" for="wall">外壁</label>
 						<div class="inputWrap">
-							<select id="wall" class="form-control">
+							<select id="wall" name="wall" class="form-control">
 								<option>モルタル</option>
 								<option>サイディング</option>
 								<option>タイル</option>
@@ -288,7 +288,7 @@
 					<div class="form-group form-group-lg col-sm-4">
 						<label class="control-label" for="toi">雨どい</label>
 						<div class="inputWrap">
-							<select id="toi" class="form-control">
+							<select id="toi" name="toi" class="form-control">
 								<option>半月</option>
 								<option>塩ビ</option>
 								<option>金属</option>
@@ -303,22 +303,23 @@
 					<div class="form-group form-group-lg col-sm-4">
 						<label class="control-label" for="roofDo">屋根工事</label>
 						<div class="inputWrap">
-							<select id="roofDo" class="form-control">
-								<option value="15">塗装＋棟交換</option>
-								<option value="30">葺き替え</option>
+							<select id="roofDo" name="roofDo" class="form-control">
+								<option value="paint">塗装＋棟交換</option>
+								<option value="cover">カバー工法</option>
+								<option value="replace">葺き替え</option>
 							</select>
 						</div>
 					</div>
 					<div class="form-group form-group-lg col-sm-4">
 						<label class="control-label" for="wallDo">外壁工事</label>
 						<div class="inputWrap">
-							<input type='text' id="wallDo" class="form-control">
+							<input type='text' id="wallDo" name="wallDo" class="form-control">
 						</div>
 					</div>
 					<div class="form-group form-group-lg col-sm-4">
 						<label class="control-label" for="toiDo">雨どい工事</label>
 						<div class="inputWrap">
-							<input type="text" id="toiDo" class="form-control">
+							<input type="text" id="toiDo" name="toiDo" class="form-control">
 						</div>
 					</div>
 				</form>
@@ -328,30 +329,31 @@
 					<div class="form-group form-group-lg col-sm-4">
 						<label class="control-label" for="roofPrice">屋根金額</label>
 						<div class="inputWrap">
-							<input type='text' id="roofPrice" class="form-control">
+							<input type='text' id="roofPrice" name="roofPrice" class="form-control">
 						</div>
 					</div>
 					<div class="form-group form-group-lg col-sm-4">
 						<label class="control-label" for="wallPrice">外壁金額</label>
 						<div class="inputWrap">
-							<input type='text' id="wallPrice" class="form-control">
+							<input type='text' id="wallPrice" name="wallPrice" class="form-control">
 						</div>
 					</div>
 					<div class="form-group form-group-lg col-sm-4">
 						<label class="control-label" for="toiPrice">雨どい金額</label>
 						<div class="inputWrap">
-							<input type="text" id="toiPrice" class="form-control">
+							<input type="text" id="toiPrice" name="toiPrice" class="form-control">
 						</div>
 					</div>
 					<div class="form-group form-group-lg col-sm-12">
+						<button type="submit" id="calcBtn">見積りを計算する！</button>
 						<label class="control-label" for="totalPrice">合計金額</label>
 						<div class="inputWrap">
-							<input type="text" id="totalPrice" class="form-control">
+							<input type="text" id="totalPrice" name="totalPrice" class="form-control">
 						</div>
 					</div>
 				</form>
 			</div>
-		</div>
+		</form>
 	</div>
 
 	<!-- Portfolio -->
