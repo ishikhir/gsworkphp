@@ -16,6 +16,11 @@ $('#doWhatArea').hide();
 $('#priceArea').hide();
 
 
+//　フォーム部分
+
+
+
+
 
 
 
