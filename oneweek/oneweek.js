@@ -17,10 +17,76 @@ $('#priceArea').hide();
 
 
 //　フォーム部分
+$('#hide2,#hide3,#calcBtn,#hide5,#hide6,#hideR1,#hideW1,#hideT1,.hideR2,.hideW2,.hideT2').hide();
 
+$('#homeAge').on('change',()=>$('#hide2').show());
+$('#homeSize').on('change',()=>$('#hideR1').show());
 
+$('#roof').on('change',()=>{
+	const roof=$("#roof").val();
+	const homeAge=$('#homeAge').val();
+	$.get("insert_home.php?id=roof",{"roof":roof,"homeAge":homeAge},data=>{
+		console.log(data);
+		$('.hideR2').show();
+		$('#roofDo').empty();
+		$('#roofDo').append("<option selected>工事方法をお選びください</option>");
+		$('#roofDo').append(data);
+	});
+});
 
+$('#roofDo').on('change',()=>{
+	const roof=$("#roof").val();
+	const roofDo=$("#roofDo").val();
+	$.get("insert_home.php?id=roofDo",{"roof":roof,"roofDo":roofDo},data=>{
+		console.log(data);
+		$('#hide3,#calcBtn').show();
+		$('#roofPrice').val(data);
+	});
+});
 
+$('#wall').on('change',()=>{
+	const wall=$("#wall").val();
+	$.get("insert_home.php?id=wall",{"wall":wall},data=>{
+		console.log(data);
+		$('#wallDo').empty();
+		$('#wallDo').append("<option selected>工事方法をお選びください</option>");
+		$('#wallDo').append(data);
+	});
+});
+
+$('#wallDo').on('change',()=>{
+	const wall=$("#wall").val();
+	const wallDo=$("#wallDo").val();
+	$.get("insert_home.php?id=wallDo",{"wall":wall,"wallDo":wallDo},data=>{
+		console.log(data);
+		$('#wallPrice').val(data);
+	});
+});
+
+$('#toi').on('change',()=>{
+	const toi=$("#toi").val();
+	$.get("insert_home.php?id=toi",{"toi":toi},data=>{
+		console.log(data);
+		$('#toiDo').empty();
+		$('#toiDo').append("<option selected>工事方法をお選びください</option>");
+		$('#toiDo').append(data);
+	});
+});
+
+$('#toiDo').on('change',()=>{
+	const toi=$("#toi").val();
+	const toiDo=$("#toiDo").val();
+	$.get("insert_home.php?id=toiDo",{"toi":toi,"toiDo":toiDo},data=>{
+		console.log(data);
+		$('#toiPrice').val(data);
+	});
+});
+
+$('#calcBtn').on('click',e=>{
+	e.preventDefault();
+	$('#hide5,#hide6').show();
+	$('#totalPrice').val(($('#roofPrice').val()*1+$('#wallPrice').val()*1+$('#toiPrice').val()*1+$("#scaffoldPrice").val()*1)*($('#homeSize').val()*1));
+	});
 
 
 
@@ -114,81 +180,81 @@ var loadImg2 = document.getElementById('loadImg2');
 var ocrArr=[];
 
 // File APIに対応しているか確認
-if (window.File && window.FileReader && window.FileList && window.Blob) {
-	function loadLocalImage(e) {
-		// ファイル情報を取得
-		var fileData = e.target.files[0];
-		console.log(fileData); // 取得した内容の確認用
-
-		// 画像ファイル以外は処理を止める
-		if (!fileData.type.match('image.*')) {
-			alert('画像を選択してください');
-			return;
-		}
-
-		// FileReaderオブジェクトを使ってファイル読み込み
-		var reader = new FileReader();
-		// ファイル読み込みに成功したときの処理
-		reader.onload = function() {
-			var img = document.createElement('img');
-			img.src = reader.result;
-			loadImg.appendChild(img);
-
-
-/*＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
-＊　文字認識　API
-＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊*/
-
-		Tesseract.recognize(img.src, {
-			lang: "jpn"
-		}).then(function(result) {
-			const a = document.querySelector("#ocrImg");
-			a.innerHTML = result.html;
-			$('#ocrComp').fadeIn(1000);
-			$('#homeOption').fadeIn(1000);
-			$('#doWhatArea').fadeIn(1000);
-			$('#priceArea').fadeIn(1000);
-			console.log(a.innerHTML);
-
-
-			for(let i=1;i<10;i++){
-				console.log($(`#line_1_1 #word_1_${i}`).html());
-				console.log($(`#line_1_2 #word_1_${i}`).html());
-				console.log($(`#line_1_3 #word_1_${i}`).html());
-				if($(`#line_1_1 #word_1_${i}`).html()!==undefined){
-					ocrArr.push($(`#line_1_1 #word_1_${i}`).html());
-				}
-				if($(`#line_1_2 #word_1_${i}`).html()!==undefined){
-					ocrArr.push($(`#line_1_2 #word_1_${i}`).html());
-				}
-				if($(`#line_1_3 #word_1_${i}`).html()!==undefined){
-					ocrArr.push($(`#line_1_3 #word_1_${i}`).html());
-				}
-			}
-
-			console.log(ocrArr);
-			if(ocrArr[0]==='屋根'){
-				let roofType=ocrArr[1];
-				console.log(roofType);
-//				$('#roof option').val(roofCategory[roofType]);
-//				console.log(roofCategory[roofType]);
-				}
-
-
-		});
-
-
-		}
-		// ファイル読み込みを実行
-		reader.readAsDataURL(fileData);
-		$('#nothingWrap').hide();
-		$('#loadComp').fadeIn(1000);
-	}
-	upLoad.addEventListener('change', loadLocalImage, false);
-} else {
-	upLoad.style.display = 'none';
-	loadImg.innerHTML = 'File APIに対応したブラウザでご確認ください';
-}
+//if (window.File && window.FileReader && window.FileList && window.Blob) {
+//	function loadLocalImage(e) {
+//		// ファイル情報を取得
+//		var fileData = e.target.files[0];
+//		console.log(fileData); // 取得した内容の確認用
+//
+//		// 画像ファイル以外は処理を止める
+//		if (!fileData.type.match('image.*')) {
+//			alert('画像を選択してください');
+//			return;
+//		}
+//
+//		// FileReaderオブジェクトを使ってファイル読み込み
+//		var reader = new FileReader();
+//		// ファイル読み込みに成功したときの処理
+//		reader.onload = function() {
+//			var img = document.createElement('img');
+//			img.src = reader.result;
+//			loadImg.appendChild(img);
+//
+//
+///*＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
+//＊　文字認識　API
+//＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊*/
+//
+//		Tesseract.recognize(img.src, {
+//			lang: "jpn"
+//		}).then(function(result) {
+//			const a = document.querySelector("#ocrImg");
+//			a.innerHTML = result.html;
+//			$('#ocrComp').fadeIn(1000);
+//			$('#homeOption').fadeIn(1000);
+//			$('#doWhatArea').fadeIn(1000);
+//			$('#priceArea').fadeIn(1000);
+//			console.log(a.innerHTML);
+//
+//
+//			for(let i=1;i<10;i++){
+//				console.log($(`#line_1_1 #word_1_${i}`).html());
+//				console.log($(`#line_1_2 #word_1_${i}`).html());
+//				console.log($(`#line_1_3 #word_1_${i}`).html());
+//				if($(`#line_1_1 #word_1_${i}`).html()!==undefined){
+//					ocrArr.push($(`#line_1_1 #word_1_${i}`).html());
+//				}
+//				if($(`#line_1_2 #word_1_${i}`).html()!==undefined){
+//					ocrArr.push($(`#line_1_2 #word_1_${i}`).html());
+//				}
+//				if($(`#line_1_3 #word_1_${i}`).html()!==undefined){
+//					ocrArr.push($(`#line_1_3 #word_1_${i}`).html());
+//				}
+//			}
+//
+//			console.log(ocrArr);
+//			if(ocrArr[0]==='屋根'){
+//				let roofType=ocrArr[1];
+//				console.log(roofType);
+////				$('#roof option').val(roofCategory[roofType]);
+////				console.log(roofCategory[roofType]);
+//				}
+//
+//
+//		});
+//
+//
+//		}
+//		// ファイル読み込みを実行
+//		reader.readAsDataURL(fileData);
+//		$('#nothingWrap').hide();
+//		$('#loadComp').fadeIn(1000);
+//	}
+//	upLoad.addEventListener('change', loadLocalImage, false);
+//} else {
+//	upLoad.style.display = 'none';
+//	loadImg.innerHTML = 'File APIに対応したブラウザでご確認ください';
+//}
 
 //　File API　チャット
 
@@ -225,39 +291,6 @@ if (window.File && window.FileReader && window.FileList && window.Blob) {
 }
 
 
-
-//　郵便番号検索 API　チャット
-
-//$(function () {
-//	$('#btn').on('click', function () {
-//		//今後、ここにクリックされた時の処理を記述する。
-//		$.ajax({
-//			url: 'http://zipcloud.ibsnet.co.jp/api/search?zipcode=' +
-//				$('#zipcode').val(),
-//			dataType: 'jsonp',
-//		}).done(function (data) {
-//			if (data.results) {
-//				setData(data.results[0]);
-//			} else {
-//				alert('該当するデータが見つかりませんでした');
-//			}
-//		}).fail(function (data) {
-//			alert('通信に失敗しました');
-//		});
-//	});
-//
-//	// データ取得が成功した時の処理
-//	function setData(data) {
-//		//取得したデータを各HTML要素に代入
-//		$('#prefecture').val(data.address1); //都道府県名
-//		$('#city').val(data.address2); //市区町村名
-//		$('#address').val(data.address3); //町域名
-//	}
-//});
-
-
-
-
 $('#nothing').on('click', function() {
 	$('#loadComp').fadeIn(500);
 	$('#homeOption').fadeIn(500);
@@ -265,14 +298,14 @@ $('#nothing').on('click', function() {
 	$('#priceArea').fadeIn(500);
 });
 
-var homeAge=document.querySelector('#homeAge');
-var roofDo=document.querySelector('#roofDo');
-roofDo.addEventListener('change',()=>{
-//$('#roofPrice').val(homeAge.val*roofSlate30.坪単価);
-console.log(homeAge);
-console.log(homeAge.value);
-console.log(roofSlate30.坪単価);
-});
+//var homeAge=document.querySelector('#homeAge');
+//var roofDo=document.querySelector('#roofDo');
+//roofDo.addEventListener('change',()=>{
+////$('#roofPrice').val(homeAge.val*roofSlate30.坪単価);
+//console.log(homeAge);
+//console.log(homeAge.value);
+//console.log(roofSlate30.坪単価);
+//});
 
 
 // Initialize Firebase
@@ -285,6 +318,30 @@ var config = {
 	messagingSenderId: "96210396193"
 };
 firebase.initializeApp(config); //　isitializeApp関数にconfigを読み込んで準備完了
+
+
+
+//　個別チャットルーム生成
+//
+//function createDatabase(){
+//  var ref = firebase.database().ref();
+//  var hash = window.location.hash.replace(/#/g, '');
+//
+//  if(hash){
+//    ref = ref.child(hash);
+//  }else{
+//    ref = ref.push();
+//
+//    window.location = window.location + "#" + ref.key;
+//  }
+//
+//  if(typeof console !== 'undefined'){
+//    console.log('Firebase data: ', ref.toString());
+//  }
+//
+//  return ref;
+//  
+//}
 
 
 

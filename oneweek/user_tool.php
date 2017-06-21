@@ -9,6 +9,7 @@ loginCheck();
 $id = $_SESSION["id"];
 $userId = $_SESSION["userId"];
 $userPass = $_SESSION["userPass"];
+$permFlg=$_SESSION["permFlg"];
 
 ?>
 
@@ -25,6 +26,14 @@ $userPass = $_SESSION["userPass"];
 		<button class="mb20" id="useGraphBtn"><a href="satisfaction_q.php">ユーザーの体験談を参照する</a></button>
 		<button class="mb20" id="updateBtn">登録情報変更</button>
 		<button class="mb20" id="logoutBtn"><a href="logout.php">ログアウトする</a></button>
+
+	<?php
+		if(isset($_SESSION["permFlg"]) && $_SESSION["permFlg"]==1){
+			echo '<button class="mb20" id="logoutBtn"><a href="logout.php">工事単価管理画面</a></button>';
+		}
+	?>
+
+
 	</div>
 	<form id="userUpdate" action="update.php" method="post">
 		<label for="homeName">ID</label>
@@ -38,9 +47,7 @@ $userPass = $_SESSION["userPass"];
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script>
 		$('#userUpdate').hide();
-		$('#updateBtn').on('click',function(){
-			$('#userUpdate').show();
-		});
+		$('#updateBtn').on('click',()=>$('#userUpdate').show());
 	</script>
 </body>
 </html>
