@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<style>
+		nav {
+			margin-bottom: 30px;
+		}
+		
+		#wrap {
+			position: relative;
+		}
+		
+		#drowarea {
+			box-shadow: 5px 5px 20px #333;
+			position: absolute;
+			z-index: 3;
+		}
+		
+		#drowarea2 {
+			box-shadow: 5px 5px 20px blue;
+			position: absolute;
+			z-index: 2;
+		}
+		
+		#drowarea3 {
+			box-shadow: 5px 5px 20px purple;
+			position: absolute;
+			z-index: 1;
+		}
+		
+		#loadImg {
+			width: 600px;
+			height: 400px;
+			box-shadow: 5px 5px 20px #333;
+			position: absolute;
+			z-index: 2;
+		}
+	</style>
+	<title>flashNumber2</title>
+</head>
+
+<body>
+	<section>
+		<h1>flashNumber2</h1>
+		<nav>
+			<p>
+				<span>色</span><input type="color" id="color" value="#000000">
+				<span>大きさ</span><input type="range" id="fz" min="1" max="60">
+				<span>番号の数</span><input type="number" id="number" value="0" min="1">
+			</p>
+			<button id="start">スタート</button>
+			<button id="dl"><a id="imgDl">結果をダウンロード</a></button>
+			<button id="reload">もう１回？</button>
+			<!--クッキーなら設定残せる？-->
+		</nav>
+		<div id="wrap" width="600" height="400">
+			<canvas id="drowarea" width="600" height="400" style=""></canvas>
+			<canvas id="drowarea2" width="600" height="400" style=""></canvas>
+			<canvas id="drowarea3" width="600" height="400" style=""></canvas>
+<!--			<div id="loadImg">あ</div>-->
+		</div>
+	</section>
+
+	<script src="js/jquery-2.1.3.min.js"></script>
+	<script src="js/func.js"></script>
+	<script>
+		/*******************************
+		 ＊　初期設定
+		 *******************************/
+
+		$("#loadImg").hide();
+		$("#reload").hide();
+		$("#dl").hide();
+		$("#drowarea2").hide();
+		$("#drowarea3").hide();
+
+		var can = $("#drowarea")[0];
+		var context = can.getContext('2d');
+		var can2 = $("#drowarea2")[0];
+		var context2 = can2.getContext('2d');
+		var can3 = $("#drowarea3")[0];
+		var context3 = can3.getContext('2d');
+
+		var canvas_mouse_event = false; //スイッチ [ true=線を引く, false=線は引かない ]  ＊＊＊
+		var clickX = []; //１つ前の座標を代入するための変数
+		var clickY = []; //１つ前の座標を代入するための変数
+		var fz = 3; //文字の大きさ初期設定
+		var color = "#000000"; //ラインの色を初期設定
+		var number = 1; //　番号の数
+		var point = []; //　正解数
+		var p = 0; //　クリックした箇所の記録用
+
+		/*
+		 ＊　キャンバス外クリック禁止
+		 */
+
+		$(can).on('mouseout', function() {
+			canvas_mouse_event = false;
+		});
+
+
+		/*
+		 ＊　フォントサイズ変更
+		 */
+
+		$("#fz").change(function() {
+			fz = $(this).val();
+			console.log(fz);
+		});
+
+
+		/*
+		 ＊　色変更
+		 */
+
+		$("#color").change(function() {
+			color = $(this).val();
+			console.log(color);
+		});
+
+
+		/*
+		 ＊　出現数を取得
+		 */
+
+		$("#number").change(function() {
+			number = $(this).val();
+			console.log(number);
+		});
+
+
+		/*
+		 ＊　スタートをクリックしたらそれぞれを取得
+		 　　出現数分の座標を作成、配列にしまう
+		 */
+
+		var qx = [rand(can.width - fz / 2)]; // 先に１つ入れとかないと、空の箱を見ちゃうから１つ入れとく　多分
+		var qy = [rand(can.height - fz / 2)]; // 先に１つ入れとかないと、空の箱を見ちゃうから１つ入れとく　多分
+		$('#start').on('click', function() {
+			for (var i = 1; i <= number; i++) {
+				qx.push(rand(can.width - fz / 2));
+				qy.push(rand(can.height - fz / 2));
+				console.log(qx);
+				console.log(qy);
+				/*
+				 ＊　出現数分の番号を書く
+				 */
+
+				//カラー指定
+				context.fillStyle = color;
+				//fontサイズ、書式
+				context.font = fz + 'px _sans';
+				//文字の設置位置
+				context.textBaseline = "top"; //top,middle,bottom...
+				//表示文字と座標
+				context.fillText(i, qx[i], qy[i]);
+			}
+
+
+			/*
+			 ＊　表示したら即保存
+			 */
+//			var save1 = can.toDataURL();
+//			localStorage.setItem("aaa", save1);
+
+
+			/*
+			 ＊　１秒後に消す
+			 */
+
+
+
+			setTimeout(function(){
+				$("#drowarea").hide();
+				$("#drowarea2").show();
+			}, 1000);
+
+
+			setTimeout(function() {
+				alert('番号順に位置をクリック！');
+				canvas_mouse_event = true; //　alert出るまでfalseにしたいけど効いてない！
+			}, 1500);
+
+			/*
+			 ＊　少し上でマウスをONにしてある
+			 　　クリックした位置座標を出現数分、配列に取得、出現数クリックしたら、終了アラート
+			 */
+
+			$("#drowarea2").on('mousedown', function(e) {
+				if (clickX.length >= number && clickY.length >= number) {
+					canvas_mouse_event = false;
+					alert("答え（クリック）");
+
+//画像合成できない！
+//					var save2 = can.toDataURL();
+//					localStorage.setItem("bbb", save2);
+//					context.beginPath();
+//					context.clearRect(0, 0, can.width, can.height);
+//					var load1 = localStorage.getItem("aaa");
+//					var load2 = localStorage.getItem("bbb");
+//					var img1=new Image();
+//					img1.src=load1;
+//					var img2=new Image();
+//					img2.src=load2;
+//
+//console.log(load1);
+//console.log(img2);
+//
+//
+					$("#drowarea2").hide();
+					$("#drowarea3").show();
+					context3.drawImage(can,0,0,can.width,can.height);
+					context3.drawImage(can2,0,0,can.width,can.height);
+
+
+//					$("#loadImg").html('<img src="' + load1 + '" alt="">');
+//					$("#loadImg").css('width', can.width).css('height', can.height).fadeIn(1000);
+//					$("#drowarea3").css('box-shadow', 'none');
+					var ax = [];
+					var ay = [];
+					for (var i = 0; i <= number; i++) { //　位置不安ここから
+						ax.push((qx[i + 1] - clickX[i]));
+						ay.push((qy[i + 1] - clickY[i]));
+						console.log(ax);
+						console.log(ay);
+						if (-10 + fz / 3 * -1 <= ax[i] && ax[i] <= 10 + fz / 3 && -10 + fz / 3 * -1 <= ay[i] && ay[i] <= 10 + fz / 3) { //　ifの中のforの中でifは可能？　ダメならloadクリックに移行？
+							point.push(1);
+						}
+					}
+					ax.pop();
+					ay.pop();
+					console.log(ax);
+					console.log(ay);
+					console.log(point);
+					$('h1').html("　" + number + "問中　" + point.length + "問　正解！").css('color', '#fff').css('background', '#000');
+					$("#dl").show();
+					$("#reload").show();
+				} else {
+					clickX.push(e.offsetX);
+					clickY.push(e.offsetY);
+					console.log(clickX);
+					console.log(clickY);
+					//カラー指定
+					context2.fillStyle = '#f00';
+					//fontサイズ、書式
+					context2.font = '3px _sans';
+					//文字の設置位置
+					context2.textBaseline = "top"; //top,middle,bottom...
+					//表示文字と座標
+					context2.fillText(p + 1, clickX[p], clickY[p]);
+					//					//色指定
+					//					context.strokeStyle = "#f00"; //need list of available colors
+					//					//線の太さ
+					//					context.lineWidth=3;
+					//					//線の端の形状
+					//					context.lineCap='square';//butt, round, square
+					//					//パスの開始
+					//					context.beginPath();
+					//					//始点
+					//					context.moveTo(clickX[p], clickY[p]);
+					//					//終点
+					//					context.lineTo(clickX[p], clickY[p]);
+					//					//描画
+					//					context.stroke();
+					//					//パスを閉じる
+					//					context.closePath();
+					p++;
+				}
+				canvas_mouse_event = false; //　アラート後にクリックできちゃう。正解数増えちゃう。位置不明止まらない
+			});
+		}); //　$('#start').on('click',function
+
+
+		/*
+		 *　結果を保存して画像ダウンロードしたい
+		 　　右クリックするとz-indexでクリックした地点だけしか取れてない
+		 */
+
+		$("#dl").on('click', function() {
+			$("#imgDl").attr({
+				href:can3.toDataURL().replace('image/png','application/octet-stream'),
+				download:`${new Date().getTime()} .png`
+			});
+		});
+
+
+		/*
+		 *　もう１回？　をクリックでリロード
+		 　　設定を引き継ぎたい　クッキー？
+		 */
+
+		$("#reload").on('click', function() {
+			location.reload();
+		});
+
+
+		/*
+		 *　Geolocation API
+		 */
+
+		//Main:位置情報を取得する処理 //getCurrentPosition:１回取得　or watchPosition:定期的に取得
+		navigator.geolocation.getCurrentPosition(mapsInit, mapsError, set);
+
+
+		//1．位置情報の取得に成功した時の処理
+		function mapsInit(position) { //getで成功するとpositionで値が帰ってくるので値を切り出す処理
+			try {
+				//lat=緯度、lon=経度 を取得
+				var lat = position.coords.latitude;
+				var lon = position.coords.longitude;
+
+
+				/*
+				 *　YOLP 天気API
+				 */
+
+
+				var appid = 'dj0zaiZpPW92V1lHTTBUOXdpSCZzPWNvbnN1bWVyc2VjcmV0Jng9YjY-';
+				var coord = lon + "," + lat; //geolocation
+
+				$.getJSON("https://map.yahooapis.jp/weather/V1/place?callback=?&coordinates=" + coord + "&output=json&appid=" + appid,
+					function(yolp) {
+						console.dir(yolp);
+						var w0 = yolp.Feature[0].Property.WeatherList.Weather[0].Rainfall;
+						var w6 = yolp.Feature[0].Property.WeatherList.Weather[6].Rainfall;
+						console.log(w0);
+						if (w0 === 0) {
+							$("#drowarea3").css('box-shadow', '5px 5px 20px #fb6716');
+						}
+						if (0 < w0 && w0 <= 10) {
+							$("#drowarea3").css('box-shadow', '5px 5px 20px #c9cfc1');
+						}
+						if (10 < w0 && w0 <= 20) {
+							$("#drowarea3").css('box-shadow', '5px 5px 20px #157da0');
+						}
+						if (w0 > 20) {
+							$("#drowarea3").css('box-shadow', '5px 5px 20px #9cffee');
+						}
+					});
+
+
+			} catch (error) {
+				console.log("getGeolocation: " + error);
+			}
+		};
+
+		//2． 位置情報の取得に失敗した場合の処理
+		function mapsError(error) { //getで失敗するとerrorで値(1,2,3)が帰ってくるので.codeで処理。
+			var e = "";
+			if (error.code == 1) { //1＝位置情報取得が許可されてない（ブラウザの設定）
+				e = "位置情報が許可されてません";
+			}
+			if (error.code == 2) { //2＝現在地を特定できない
+				e = "現在位置を特定できません";
+			}
+			if (error.code == 3) { //3＝位置情報を取得する前にタイムアウトになった場合
+				e = "位置情報を取得する前にタイムアウトになりました";
+			}
+			alert("エラー：" + e);
+		};
+
+		//3.位置情報取得オプション
+		var set = {
+			enableHighAccuracy: true, //より高精度な位置を求める
+			maximumAge: 20000, //最後の現在地情報取得が20秒以内であればその情報を再利用する設定
+			timeout: 10000 //10秒以内に現在地情報を取得できなければ、処理を終了
+		};
+	</script>
+</body>
+</html>

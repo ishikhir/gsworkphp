@@ -98,7 +98,11 @@ include("functions.php");
 	<!-- chat_left -->
 <?php
 	if(isset($_SESSION["ssidCheck"]) && $_SESSION["ssidCheck"]==session_id()){
+		$permFlg=$_SESSION["permFlg"];
 		include("chat.php");
+		echo '<div><span id="userId2">'.$_SESSION["userId"].'</span><span id="permFlg">'.$permFlg.'</span></div>';
+		echo '<div id="userAddress2"><input type="text" id="userAddress" value="'.$_SESSION["address1"].$_SESSION["address2"].'"></div>';
+
 	}
 ?>
 	<!-- Header -->
@@ -469,6 +473,7 @@ include("functions.php");
 	<script src='https://cdn.rawgit.com/naptha/tesseract.js/1.0.10/dist/tesseract.js'></script>
 	<script src="https://www.gstatic.com/firebasejs/4.0.0/firebase.js"></script>
 	<script src="oneweek.js"></script>
+	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB4txg9bXw8l5_AafBsGaa2RhIJ0VpCRsk&callback=initMap"></script>
 </body>
 
 </html>

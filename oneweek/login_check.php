@@ -26,6 +26,8 @@ if($result["id"]!=""&&$result["lifeFlg"]==0&&password_verify($userPass,$result["
 	$_SESSION["userPass"]=$result["userPass"];
 	$_SESSION["name"]=$result["name"];
 	$_SESSION["permFlg"]=$result["permFlg"];
+	$_SESSION["address1"]=$result["address1"];
+	$_SESSION["address2"]=$result["address2"];
 	header("Location: user_tool.php");
 }else{
 	header("Location: index.php");

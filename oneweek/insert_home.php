@@ -13,7 +13,7 @@ if(isset($_GET["id"]) && $_GET["id"]=="roof"){
 	$roof=$_GET["roof"];
 	$homeAge=$_GET["homeAge"];
 	$pdo = pdolocalhost();
-	$stmt = $pdo->prepare("SELECT * FROM roof_spec WHERE type=:roof AND homeAge > :homeAge");
+	$stmt = $pdo->prepare("SELECT * FROM roof_spec WHERE type=:roof AND homeAge > :homeAge AND overSpec < :homeAge");
 	$stmt->bindValue(':roof', $roof, PDO::PARAM_STR);
 	$stmt->bindValue(':homeAge', $homeAge, PDO::PARAM_INT);
 	$status = $stmt->execute();

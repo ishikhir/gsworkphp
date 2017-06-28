@@ -19,7 +19,20 @@ $('#priceArea').hide();
 //　フォーム部分
 $('#hide2,#hide3,#calcBtn,#hide5,#hide6,#hideR1,#hideW1,#hideT1,.hideR2,.hideW2,.hideT2').hide();
 
-$('#homeAge').on('change',()=>$('#hide2').show());
+$('#homeAge').on('change',()=>{
+	const roof=$("#roof").val();
+	const homeAge=$('#homeAge').val();
+	if($('#homeSize').val()!=''){
+		$.get("insert_home.php?id=roof",{"roof":roof,"homeAge":homeAge},data=>{
+			console.log(data);
+			$('#roofDo').empty();
+			$('#roofDo').append("<option selected>工事方法をお選びください</option>");
+			$('#roofDo').append(data);
+		});
+	}
+	$('#hide2').show();
+});
+
 $('#homeSize').on('change',()=>$('#hideR1').show());
 
 $('#roof').on('change',()=>{
@@ -90,7 +103,7 @@ $('#calcBtn').on('click',e=>{
 
 
 
-/** JS：Area */
+/** UI Area */
 
 
 // Closes the sidebar menu
@@ -115,7 +128,6 @@ $("#menu-toggle3").on("click",function(e) {
 	return false;
 });
 
-
 $("#menu-close4").on("click",function(e) {
 	$("#sidebar-wrapper4").toggleClass("active");
 	return false;
@@ -125,19 +137,6 @@ $("#menu-toggle4").on("click",function(e) {
 	$("#sidebar-wrapper4").toggleClass("active");
 	return false;
 });
-
-$("#menu-close2").on("click",function(e) {
-	$("#sidebar-wrapper2").toggleClass("active");
-	return false;
-});
-
-$("#menu-toggle2").on("click",function(e) {
-	$("#sidebar-wrapper2").toggleClass("active");
-	var sign = window.prompt("ユーザー名をご入力ください", "ニックネーム可");
-	$('#username').val(sign);
-	return false;
-});
-
 
 $('#loginBtn').on('click',function(){
 	$('#userLogin').show();
@@ -291,24 +290,15 @@ if (window.File && window.FileReader && window.FileList && window.Blob) {
 }
 
 
-$('#nothing').on('click', function() {
-	$('#loadComp').fadeIn(500);
-	$('#homeOption').fadeIn(500);
-	$('#doWhatArea').fadeIn(500);
-	$('#priceArea').fadeIn(500);
-});
+/*＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
 
-//var homeAge=document.querySelector('#homeAge');
-//var roofDo=document.querySelector('#roofDo');
-//roofDo.addEventListener('change',()=>{
-////$('#roofPrice').val(homeAge.val*roofSlate30.坪単価);
-//console.log(homeAge);
-//console.log(homeAge.value);
-//console.log(roofSlate30.坪単価);
-//});
+＊　firebase
+
+＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊*/
 
 
 // Initialize Firebase
+
 var config = {
 	apiKey: "AIzaSyDOWPhYU8acaB6t5wR-t1rf02Yg54LtIEY",
 	authDomain: "chatapp-6d65c.firebaseapp.com",
@@ -317,107 +307,168 @@ var config = {
 	storageBucket: "chatapp-6d65c.appspot.com",
 	messagingSenderId: "96210396193"
 };
-firebase.initializeApp(config); //　isitializeApp関数にconfigを読み込んで準備完了
+firebase.initializeApp(config);
+
+var newPostRef = firebase.database().ref();
+
+const USERID=$('#userId2').html();
+$('#userId2,#permFlg').hide();
+
+//固有のdatabaseを作成
+
+function FBpushId(){
+	var ref=newPostRef.push();
+	return ref;
+}
+console.log(FBpushId());
+if(USERID!=""){
+//	const FBPID=FBpushId();
+//	var KEY=FBPID.key;
+	$('#roomId').val(USERID);
+}
+if($('#permFlg').html()==0)$('#roomId').hide();
+//console.log(KEY);
 
 
+$("#menu-close2").on("click",function(e) {
+	$("#sidebar-wrapper2").toggleClass("active");
+	return false;
+});
 
-//　個別チャットルーム生成
-//
-//function createDatabase(){
-//  var ref = firebase.database().ref();
-//  var hash = window.location.hash.replace(/#/g, '');
-//
-//  if(hash){
-//    ref = ref.child(hash);
-//  }else{
-//    ref = ref.push();
-//
-//    window.location = window.location + "#" + ref.key;
-//  }
-//
-//  if(typeof console !== 'undefined'){
-//    console.log('Firebase data: ', ref.toString());
-//  }
-//
-//  return ref;
-//  
-//}
+$("#menu-toggle2").on("click",function(e) {
+	$("#sidebar-wrapper2").toggleClass("active");
+	alert(USERID+'さま、チャットルームへようこそ');
+	$('#username').val(USERID);
+	return false;
+});
 
-
-
-//１．Authentication → ログイン方法 → 匿名を選択
-//　初期はログインしないとチャットできない仕様
-//　firebaseのコンソール画面で行う
-//＋　Database,ルールで
-//{
-//  "rules": {
-//    ".read": true,
-//    ".write": true
-//  }
-//}　にする
-
-
-//2.MSG送受信準備
-
-var newPostRef = firebase.database().ref(); //　送信データがnewPostRefに入る
-
-//3.Submit:MSG送信
 
 $("#send").on('click', function() {
 	var date = WTIN('.', '.', ' ', ':');
 	var img2 = document.querySelector('#img2');
-	newPostRef.push({
+	if(img2==null)img2="";
+	else img2=img2.src;
+	console.log($('#permFlg').html());
+	console.log($('#roomId').val());
+	roomId=$('#roomId').val();
+	if($('#permFlg').html()==1)roomId=roomId;
+	else roomId=USERID;
+	firebase.database().ref(`ROOMS/${roomId}`).push({
 		username: $("#username").val(),
 		text: $("#text").val(),
-		img: img2.src,
-		date: date
+		date: date,
+		img: img2,
+//		map: canvas.toDataURL('image/jpg'),
+
 	});
-	$("#text").val(''); //　送信後にテキストを空にしてるだけ
+	$("#text,#upLoad2").val(''); //　送信後にテキストを空にしてるだけ
+	$("loadImg2").empty(); //　送信後にテキストを空にしてるだけ
 });
 
-$('#text').keypress(function (e) {
-	if (e.keyCode == 13) {
-		var date = WTIN('.', '.', ' ', ':');
-		var img2 = document.querySelector('#img2');
-		newPostRef.push({
-			username: $("#username").val(),
-			text: $("#text").val(),
-			img: img2.src,
-			date: date
-		});
-		$("#text").val(''); //　送信後にテキストを空にしてるだけ
-	}
-		});
 
-
-//4.MSGデータ受信
-//child_added:毎回1個//value:毎回全てのデータを取得→　用意されているイベント
-newPostRef.on('child_added', function(data) { //　dataに値が入ってくるが、dataを生では見れない
-	var v = data.val(); //　送信データ受信　これで初めてdataの中身が見れるようになる
+function firebaseOutput(data){
+	var v = data.val();
 	var k = data.key; //　送信データに紐付いたユニークkey　後で削除したい時とかに使う→　削除すると送った先も消える
 	if ($('#username').val() === v.username) {
 		var str = `<div class="msg me">
-					<div class="user" id="${k}">
+					<div class="user">
 						<p class="username">${v.username}</p>
 						<p>${v.date}</p>
 					</div>
 					<div class="textWrap">
-						<span class="text">${v.text}</span>
+						<p class="text"><a class="deleteText" value="${v.username}" id="${k}">${v.text}</a></p>
 					</div>
 					<p class="imgBox"><img class="img" src="${v.img}"></p>
-				</div>` //　表示方法を整形
+				</div>`
 		$("#output").prepend(str);
 	} else {
 		str = `<div class="msg">
-				<div class="user" id="${k}">
+				<div class="user">
 					<p class="username">${v.username}</p>
 					<p>${v.date}</p>
 				</div>
 				<div class="textWrap">
-					<span class="text">${v.text}</span>
+					<p class="text"><a class="deleteText" value="${v.username}" id="${k}">${v.text}</a></p>
 				</div>
 				<p class="imgBox"><img class="img" src="${v.img}"></p>
-			</div>` //　表示方法を整形
+			</div>`
 		$("#output").prepend(str);
 	}
+}
+
+
+$('#roomId').on("change",()=>{
+	firebase.database().ref(`ROOMS/${$('#roomId').val()}`).on('child_added', data=>firebaseOutput(data));
 });
+
+firebase.database().ref(`ROOMS/${$('#roomId').val()}`).on('child_added',data=>firebaseOutput(data));//　上で"load change"　だと効かなかったので下にもう１回load用のfunction
+
+
+$(document).on('click','.deleteText',function(){//　DOMがスタート時にはないから反応しなかった再読み込みして、第２引数でDOMを取得　アロー関数だとthisがdocumentになっちゃう
+	var messageId = $(this).attr("id");
+	messageId=$(this).attr("id");
+	var messageUsername = $(this).attr("value");
+	messageId=$(this).attr("id");
+	console.log(`USERID: ${USERID}-----html: ${messageUsername}`)
+	if(USERID==messageUsername){
+		if(confirm("メッセージを削除しますか？")==true){
+			firebase.database().ref(`ROOMS/${$('#roomId').val()}/${messageId}`).remove();
+		}
+	}else alert("ご自分のメッセージは削除できます。");
+});
+
+
+/*＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
+
+＊　googlemap
+
+＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊*/
+
+
+const userAddress=$('#userAddress').val();
+$('#userAddress2').hide();
+$('#address').val(userAddress);
+
+function initMap() {
+	var map = new google.maps.Map(document.getElementById('map'), {
+		zoom: 17,
+		center: {lat: 35.6811716, lng: 139.7648629},
+		mapTypeId: 'satellite',
+	});
+	var geocoder = new google.maps.Geocoder();
+
+	document.getElementById('submit').addEventListener('click', function() {
+		geocodeAddress(geocoder, map);
+	});
+}
+
+function geocodeAddress(geocoder, resultsMap) {
+	var address = document.getElementById('address').value;
+	geocoder.geocode({'address': address}, function(results, status) {
+		if (status === 'OK') {
+			resultsMap.setCenter(results[0].geometry.location);
+			var marker = new google.maps.Marker({
+			map: resultsMap,
+			position: results[0].geometry.location
+			});
+		} else {
+			alert('Geocode was not successful for the following reason: ' + status);
+		}
+	});
+}
+
+//$('#sendMap').on('click',()=>{
+//	var map=$('#map');
+//	var canvas = $("#drowarea")[0];
+//	var context = canvas.getContext('2d');
+//	context.drawImage(map,0,0,map.width,map.height);
+//});
+
+
+//$("#dl").on('click', function() {
+//	$("#imgDl").attr({
+//		href:can3.toDataURL().replace('image/png','application/octet-stream'),
+//		download:`${new Date().getTime()} .png`
+//	});
+//});
+
