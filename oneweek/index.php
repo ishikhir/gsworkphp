@@ -472,6 +472,7 @@ include("functions.php");
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 	<script src='https://cdn.rawgit.com/naptha/tesseract.js/1.0.10/dist/tesseract.js'></script>
 	<script src="https://www.gstatic.com/firebasejs/4.0.0/firebase.js"></script>
+	<script src="html2canvas.js"></script>
 	<script src="oneweek.js"></script>
 	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB4txg9bXw8l5_AafBsGaa2RhIJ0VpCRsk&callback=initMap"></script>
 </body>

@@ -38,11 +38,9 @@
 					<div id="loadImg2"></div>
 				</div>
 			</li>
-<!--
-			<li>
-				<canvas id="drowarea"></canvas>
+			<li id="mapSS2">
+				<img id="mapSS" src="">
 			</li>
--->
 			<li>
 				<button id="send" class="tossing">送信</button>
 			</li>

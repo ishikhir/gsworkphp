@@ -448,8 +448,8 @@ function geocodeAddress(geocoder, resultsMap) {
 		if (status === 'OK') {
 			resultsMap.setCenter(results[0].geometry.location);
 			var marker = new google.maps.Marker({
-			map: resultsMap,
-			position: results[0].geometry.location
+				map: resultsMap,
+				position: results[0].geometry.location
 			});
 		} else {
 			alert('Geocode was not successful for the following reason: ' + status);
@@ -457,12 +457,21 @@ function geocodeAddress(geocoder, resultsMap) {
 	});
 }
 
-//$('#sendMap').on('click',()=>{
-//	var map=$('#map');
-//	var canvas = $("#drowarea")[0];
-//	var context = canvas.getContext('2d');
-//	context.drawImage(map,0,0,map.width,map.height);
-//});
+$("#mapSS2").hide();
+var mapCanvas=$('#map');
+
+function map2image() {
+	html2canvas($("#map"),{
+		useCORS: true,
+		onrendered: function(mapCanvas) {
+			var myImage = mapCanvas.toDataURL("image/png");
+			$("#mapSS2").show();
+			$("#mapSS").attr("src", myImage);
+		}
+	});
+}
+
+$('#sendMap').on('click',()=>map2image());
 
 
 //$("#dl").on('click', function() {

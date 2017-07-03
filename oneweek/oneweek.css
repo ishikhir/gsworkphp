@@ -127,6 +127,10 @@ hr.small {
 	line-height: 40px;
 }
 
+.sidebar-nav li #mapSS {
+		text-indent: 0px;
+
+}
 .sidebar-nav li input ,
 .sidebar-nav li textarea {
 	color: #333;
